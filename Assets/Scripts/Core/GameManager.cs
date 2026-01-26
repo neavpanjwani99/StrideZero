@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         if (isGameOver) return;
 
         isGameOver = true;
-        Time.timeScale = 0f;   // 🔥 HARD STOP
+        Time.timeScale = 0f;   
         Debug.Log("GAME OVER");
     }
 

@@ -8,38 +8,28 @@ public class EnvironmentMove : MonoBehaviour
     float timer;
     bool isGameOver = false;
 
-    void Start()
-    {
+    void Start(){
         speed = config.startSpeed;
     }
 
-    void OnEnable()
-    {
+    void OnEnable(){
         GameEvents.OnGameOver += OnGameOver;
     }
 
-    void OnDisable()
-    {
+    void OnDisable(){
         GameEvents.OnGameOver -= OnGameOver;
     }
 
-    void Update()
-    {
-        if (isGameOver) return;   
-
-        transform.Translate(Vector3.back * speed * Time.deltaTime);
-
-        timer += Time.deltaTime;
-
-        if (timer >= 5f && speed < config.maxSpeed)
-        {
-            timer = 0f;
-            speed += config.speedIncrease;
+    void Update(){
+        if (isGameOver){
+            speed = Mathf.Lerp(speed, 0f, Time.deltaTime * 2f);
         }
+        else{
+            speed = Mathf.Min(speed + config.speedIncrease * Time.deltaTime, config.maxSpeed);
+        }
+        transform.Translate(Vector3.back * speed * Time.deltaTime);
     }
-
-    void OnGameOver()
-    {
+    void OnGameOver(){
         isGameOver = true;
     }
 }

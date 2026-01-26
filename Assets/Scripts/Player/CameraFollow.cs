@@ -38,7 +38,7 @@ public class CameraFollow : MonoBehaviour
                 transform.Translate(Vector3.forward * 5f * Time.deltaTime);
                 timer += Time.deltaTime;
             }
-            // else → DO NOTHING (camera stops)
+        
         }
     }
 

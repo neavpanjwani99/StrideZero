@@ -5,12 +5,15 @@ public class PlayerMovement : MonoBehaviour
     public GameConfig config;
 
     Rigidbody rb;
+    PlayerHealth health;
+
     bool isGrounded;
     bool isDead = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        health = GetComponent<PlayerHealth>();
     }
 
     void Update()
@@ -37,14 +40,22 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.CompareTag("Ground"))
-            isGrounded = true;
+{
+    if (isDead) return;
 
-        if (col.gameObject.CompareTag("Obstacle"))
-        {
-            isDead = true;
-            GameEvents.OnGameOver?.Invoke();
-        }
+    if (col.gameObject.CompareTag("Ground"))
+    {
+        isGrounded = true;
     }
+
+    if (col.gameObject.CompareTag("Obstacle"))
+    {
+        health.TakeDamage(1);
+
+        if (health == null) return;
+
+        if (!health.enabled) return;
+    }
+}
+
 }

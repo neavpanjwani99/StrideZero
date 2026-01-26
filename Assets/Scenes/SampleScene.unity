@@ -864,6 +864,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -945,6 +946,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b940012af7bd0c046a472cff50658ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraCinematic
+  target: {fileID: 1288324003}
+  offset: {x: 0, y: 3, z: -6}
+  followSmooth: 5
+  shakeDuration: 0.4
+  shakeIntensity: 0.25
 --- !u!1 &1021077878
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,6 +1301,7 @@ GameObject:
   - component: {fileID: 1288324000}
   - component: {fileID: 1288323999}
   - component: {fileID: 1288324004}
+  - component: {fileID: 1288324005}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1303,8 +1322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   config: {fileID: 11400000, guid: 0a4762a8b64b4d640adb81b9935b2f5e, type: 2}
-  sideSpeed: 6
-  jumpForce: 7
 --- !u!65 &1288324000
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1425,6 +1442,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!114 &1288324005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288323998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa072df901fc5fe4093f59523dc271b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 3
 --- !u!1 &1446863943
 GameObject:
   m_ObjectHideFlags: 0
