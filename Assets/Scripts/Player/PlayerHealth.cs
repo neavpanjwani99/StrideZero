@@ -3,10 +3,11 @@ using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 3;
+    public float maxHealth = 4f;          
     public float hitCooldown = 0.6f;
+public float CurrentHealth => currentHealth;
 
-    int currentHealth;
+    float currentHealth;
     bool isDead = false;
     bool canTakeDamage = true;
 
@@ -15,20 +16,32 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
+{
+    if (isDead || !canTakeDamage) return;
+
+    currentHealth -= damage;
+    currentHealth = Mathf.Max(currentHealth, 0f); // 🔥 CLAMP FIRST
+
+    Debug.Log("Health: " + currentHealth);
+
+    if (currentHealth <= 0f)
     {
-        if (isDead || !canTakeDamage) return;
+        Die();
+        return;
+    }
 
-        currentHealth -= damage;
-        Debug.Log("Health: " + currentHealth);
+    GameEvents.OnPlayerHit?.Invoke();
+    StartCoroutine(DamageCooldown());
+}
 
-        if (currentHealth <= 0)
-        {
-            Die();
-            return;
-        }
-        GameEvents.OnPlayerHit?.Invoke();
-        StartCoroutine(DamageCooldown());
+
+    public void Heal(float amount)
+    {
+        if (isDead) return;
+
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        Debug.Log("Healed. Health: " + currentHealth);
     }
 
     IEnumerator DamageCooldown()
