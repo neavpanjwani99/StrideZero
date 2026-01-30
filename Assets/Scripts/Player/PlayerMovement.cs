@@ -4,6 +4,9 @@ public class PlayerMovement : MonoBehaviour
 {
     public GameConfig config;
 
+    [SerializeField] float speedBoostPerMission = 1.8f;
+    [SerializeField] float maxSideSpeed = 15f;
+
     Rigidbody rb;
     PlayerHealth health;
 
@@ -39,6 +42,24 @@ public class PlayerMovement : MonoBehaviour
         transform.position = pos;
     }
 
+    void OnEnable()
+    {
+        GameEvents.OnMissionCompleted += BoostSpeed;
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnMissionCompleted -= BoostSpeed;
+    }
+
+    void BoostSpeed()
+    {
+        config.sideSpeed = Mathf.Min(
+            config.sideSpeed + speedBoostPerMission,
+            maxSideSpeed
+        );
+    }
+
     void OnCollisionEnter(Collision col)
     {
         if (isDead) return;
@@ -51,11 +72,13 @@ public class PlayerMovement : MonoBehaviour
         if (col.gameObject.CompareTag("Obstacle"))
         {
             health.TakeDamage(1);
-
             if (health == null) return;
-
             if (!health.enabled) return;
         }
     }
 
+    public float GetCurrentSpeed()
+    {
+        return config.sideSpeed;
+    }
 }

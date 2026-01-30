@@ -4,68 +4,84 @@ public class EnergyDrainSystem : MonoBehaviour
 {
     public PlayerHealth playerHealth;
 
-    [Header("Energy Drain Settings")]
-    public float initialDelay = 30f;    
+    [Header("Drain Settings")]
+    public float startDelay = 25f;      
     public float drainInterval = 35f;   
-    public float drainAmount = 0.5f;    
-    float drainPauseTimer = 0f;
-public float drinkGraceTime = 6f;
+    public float drainAmount = 0.5f;
 
-
+    float baseDrainInterval;
     float timer;
+
     bool isGameOver = false;
-    bool drainStarted = false;
+    bool isPaused = false;
+    bool drainEnabled = false;
+
+    void Start()
+    {
+        baseDrainInterval = drainInterval;
+
+       
+        Invoke(nameof(EnableDrain), startDelay);
+    }
+
+    void EnableDrain()
+    {
+        drainEnabled = true;
+        timer = 0f;
+        Debug.Log("Energy drain started");
+    }
 
     void OnEnable()
     {
         GameEvents.OnGameOver += OnGameOver;
+        GameEvents.OnLevelUp += OnLevelUp;
     }
 
     void OnDisable()
     {
         GameEvents.OnGameOver -= OnGameOver;
+        GameEvents.OnLevelUp -= OnLevelUp;
     }
 
     void Update()
-{
-    if (drainPauseTimer > 0f)
-{
-    drainPauseTimer -= Time.deltaTime;
-    return;
-}
-
-    if (isGameOver || playerHealth == null) return;
-
-    // 🔥 ADD THIS
-    if (playerHealth.CurrentHealth <= 0f) return;
-
-    timer += Time.deltaTime;
-
-    if (!drainStarted)
     {
-        if (timer >= initialDelay)
+        if (isGameOver || isPaused || !drainEnabled || playerHealth == null)
+            return;
+
+        timer += Time.deltaTime;
+
+        if (timer >= drainInterval)
         {
             timer = 0f;
-            drainStarted = true;
+            playerHealth.TakeDamage(drainAmount);
         }
-        return;
     }
 
-    if (timer >= drainInterval)
+    void OnLevelUp(int level)
     {
-        timer = 0f;
-        playerHealth.TakeDamage(drainAmount);
+        drainInterval = Mathf.Max(
+            15f,
+            baseDrainInterval - (level - 1) * 3f
+        );
+
+        Debug.Log("Drain Interval Now: " + drainInterval);
     }
-}
-public void PauseDrain(float time)
-{
-    drainPauseTimer = time;
-}
-
-
 
     void OnGameOver()
     {
         isGameOver = true;
+    }
+
+    public void PauseDrain(float duration)
+    {
+        if (!gameObject.activeInHierarchy) return;
+        StartCoroutine(PauseRoutine(duration));
+    }
+
+    System.Collections.IEnumerator PauseRoutine(float duration)
+    {
+        isPaused = true;
+        yield return new WaitForSeconds(duration);
+        isPaused = false;
     }
 }

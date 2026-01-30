@@ -17,4 +17,11 @@ public class GameConfig : ScriptableObject
     [Header("Obstacles")]
     public float obstacleSpawnZ = 80f;
     public float obstacleInterval = 2f;
+
+    [Header("Speed Settings")]
+public float baseForwardSpeed = 9f;
+public float easySpeedMultiplier = 1f;
+public float normalSpeedMultiplier = 1.15f;
+public float hardSpeedMultiplier = 1.35f;
+
 }

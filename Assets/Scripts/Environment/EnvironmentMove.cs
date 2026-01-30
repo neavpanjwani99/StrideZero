@@ -5,31 +5,47 @@ public class EnvironmentMove : MonoBehaviour
     public GameConfig config;
 
     float speed;
-    float timer;
+    float elapsedTime;
     bool isGameOver = false;
 
-    void Start(){
+    void Start()
+    {
         speed = config.startSpeed;
     }
 
-    void OnEnable(){
+    void OnEnable()
+    {
         GameEvents.OnGameOver += OnGameOver;
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
         GameEvents.OnGameOver -= OnGameOver;
     }
 
-    void Update(){
-        if (isGameOver){
+    void Update()
+    {
+        if (isGameOver)
+        {
             speed = Mathf.Lerp(speed, 0f, Time.deltaTime * 2f);
         }
-        else{
-            speed = Mathf.Min(speed + config.speedIncrease * Time.deltaTime, config.maxSpeed);
+        else
+        {
+            elapsedTime += Time.deltaTime;
+
+            // 🔥 NON-LINEAR ACCELERATION (SUBWAY FEEL)
+            float t = Mathf.Clamp01(elapsedTime / 90f); // 0 → 1 in 90 sec
+            float curveMultiplier = Mathf.Lerp(0.5f, 2.2f, t * t);
+
+            speed += config.speedIncrease * curveMultiplier * Time.deltaTime;
+            speed = Mathf.Min(speed, config.maxSpeed);
         }
+
         transform.Translate(Vector3.back * speed * Time.deltaTime);
     }
-    void OnGameOver(){
+
+    void OnGameOver()
+    {
         isGameOver = true;
     }
 }

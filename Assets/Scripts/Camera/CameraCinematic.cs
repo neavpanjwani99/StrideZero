@@ -1,26 +1,25 @@
 using UnityEngine;
 using System.Collections;
 
-public class CameraCinematic : MonoBehaviour
-{
+public class CameraCinematic : MonoBehaviour{
     public Transform target;
     public Vector3 offset;
     public float followSmooth = 5f;
 
+    // (attribute) header ke jese kaam karega (inspector use ke liye not for main logic(code))
     [Header("Shake")]
+    // camera hit shake ke liye 
     public float hitShakeDuration = 0.18f;
     public float hitShakeIntensity = 0.08f;
-
+    // death ke liye shake (camera)
     public float deathShakeDuration = 0.35f;
     public float deathShakeIntensity = 0.12f;
+    Vector3 velocity; // speed track karne ke liye
+    bool isGameOver; // game over = true/false
+    bool isShaking; // phele se hi tho shake nahi ho raha hai yeh check karne ke liye 
 
-    Vector3 velocity;
-
-    bool isGameOver;
-    bool isShaking;
-
-    void OnEnable()
-    {
+// check that kabhi game over nahi hua hai aur kabhi shake nahi ho raha hai
+    void OnEnable(){
         
         isGameOver = false;
         isShaking = false;
@@ -29,14 +28,13 @@ public class CameraCinematic : MonoBehaviour
         GameEvents.OnGameOver += OnGameOver;
     }
 
-    void OnDisable()
-    {
+    void OnDisable(){
         GameEvents.OnPlayerHit -= OnPlayerHit;
         GameEvents.OnGameOver -= OnGameOver;
     }
 
-    void LateUpdate()
-    {
+// update ki jagah late update use karenge taaki player movement ke baad camera move kare
+    void LateUpdate(){
         if (target == null || isGameOver) return;
 
         Vector3 desiredPos = target.position + offset;
@@ -48,13 +46,14 @@ public class CameraCinematic : MonoBehaviour
         );
     }
 
+// player ke hit pe camera shake karega 
     void OnPlayerHit()
     {
         if (isGameOver || isShaking) return;
 
         StartCoroutine(CameraShake(hitShakeDuration, hitShakeIntensity));
     }
-
+//game khatam hone pe camera shake hoga (hard intensity se game over pe)
     void OnGameOver()
     {
         if (isGameOver) return;
@@ -65,29 +64,30 @@ public class CameraCinematic : MonoBehaviour
         StartCoroutine(CameraShake(deathShakeDuration, deathShakeIntensity));
     }
 
+    // finally used to shake the camera (coroutine)
     IEnumerator CameraShake(float duration, float intensity)
-{
-    isShaking = true;
-
-    Vector3 originalPos = transform.position;
-    float t = 0f;
-
-    while (t < duration)
     {
-        t += Time.unscaledDeltaTime;  
-        
-        float damper = 1f - (t / duration);
+        isShaking = true;
 
-        float x = Random.Range(-1f, 1f) * intensity * damper;
-        float y = Random.Range(-1f, 1f) * intensity * damper;
+        Vector3 originalPos = transform.position;
+        float t = 0f;
 
-        transform.position = originalPos + new Vector3(x, y, 0f);
+        while (t < duration)
+        {
+            t += Time.unscaledDeltaTime;
 
-        yield return null;
+            float damper = 1f - (t / duration);
+
+            float x = Random.Range(-1f, 1f) * intensity * damper;
+            float y = Random.Range(-1f, 1f) * intensity * damper;
+
+            transform.position = originalPos + new Vector3(x, y, 0f);
+
+            yield return null;
+        }
+
+        transform.position = originalPos;
+        isShaking = false;
     }
-
-    transform.position = originalPos;
-    isShaking = false;
-}
 
 }
