@@ -9,4 +9,15 @@ public class CoinManager : MonoBehaviour
         totalCoins += amount;
         Debug.Log("TOTAL COINS: " + totalCoins); 
     }
+
+    void OnEnable()
+{
+    GameEvents.OnCoinCollected += AddCoin;
+}
+
+void OnDisable()
+{
+    GameEvents.OnCoinCollected -= AddCoin;
+}
+
 }

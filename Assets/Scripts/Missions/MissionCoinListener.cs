@@ -15,10 +15,13 @@ public class MissionCoinListener : MonoBehaviour
     }
 
     void OnCoin(int amount)
-    {
-        if (missionManager.CurrentMissionType != MissionType.Coins)
-            return;
+{
+    if (missionManager == null) return;
 
-        missionManager.AddProgress(amount);
-    }
+    if (missionManager.CurrentMissionType != MissionType.Coins)
+        return;
+
+    missionManager.AddProgress(amount);
+}
+
 }
