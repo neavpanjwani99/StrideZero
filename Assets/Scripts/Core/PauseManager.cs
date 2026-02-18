@@ -26,6 +26,10 @@ public class PauseManager : MonoBehaviour
 
     public void Pause()
     {
+        // Don't allow pause if game over
+        if (FindObjectOfType<GameManager>()?.IsGameOver == true)
+            return;
+
         if (isPaused) return;
 
         isPaused = true;
@@ -39,6 +43,10 @@ public class PauseManager : MonoBehaviour
 
     public void Resume()
     {
+        // Don't allow resume if game over
+        if (FindObjectOfType<GameManager>()?.IsGameOver == true)
+            return;
+
         if (!isPaused) return;
 
         isPaused = false;

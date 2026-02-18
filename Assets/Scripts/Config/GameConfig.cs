@@ -11,7 +11,7 @@ public class GameConfig : ScriptableObject
 
     [Header("Player")]
     public float laneLimit = 1.6f;
-    public float jumpForce = 7f;
+    public float jumpForce = 10f;
     public float sideSpeed = 6f;
 
     [Header("Obstacles")]

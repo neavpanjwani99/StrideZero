@@ -11,6 +11,8 @@ public static class GameEvents
     public static Action<int> OnLevelUp;
 public static System.Action OnRunCompleted;
 public static System.Action OnGamePaused;
+public static System.Action OnGameStart;
+
 public static System.Action OnGameResumed;
 public static Action OnNewMission;
 

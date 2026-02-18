@@ -15,6 +15,13 @@ MonoBehaviour:
   startSpeed: 12
   maxSpeed: 22
   speedIncrease: 0.5
+  speedIncreaseInterval: 5
   laneLimit: 1.6
+  jumpForce: 10.5
+  sideSpeed: 11.400001
   obstacleSpawnZ: 80
   obstacleInterval: 2
+  baseForwardSpeed: 9
+  easySpeedMultiplier: 1
+  normalSpeedMultiplier: 1.15
+  hardSpeedMultiplier: 1.35

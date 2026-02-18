@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
     PlayerHealth health;
+    Animator animator;
 
     bool isGrounded;
     bool isDead = false;
@@ -17,6 +18,26 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         health = GetComponent<PlayerHealth>();
+        animator = GetComponent<Animator>();
+
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
+    }
+
+    void OnEnable()
+    {
+        GameEvents.OnMissionCompleted += BoostSpeed;
+        GameEvents.OnGameOver += OnGameOver;
+        GameEvents.OnGameStart += OnGameStart;
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnMissionCompleted -= BoostSpeed;
+        GameEvents.OnGameOver -= OnGameOver;
+        GameEvents.OnGameStart -= OnGameStart;
     }
 
     void Update()
@@ -42,14 +63,19 @@ public class PlayerMovement : MonoBehaviour
         transform.position = pos;
     }
 
-    void OnEnable()
+
+    void OnGameStart()
     {
-        GameEvents.OnMissionCompleted += BoostSpeed;
+        if (animator != null)
+            animator.enabled = true;
     }
 
-    void OnDisable()
+    void OnGameOver()
     {
-        GameEvents.OnMissionCompleted -= BoostSpeed;
+        isDead = true;
+
+        if (animator != null)
+            animator.enabled = false;
     }
 
     void BoostSpeed()
@@ -72,8 +98,6 @@ public class PlayerMovement : MonoBehaviour
         if (col.gameObject.CompareTag("Obstacle"))
         {
             health.TakeDamage(1);
-            if (health == null) return;
-            if (!health.enabled) return;
         }
     }
 

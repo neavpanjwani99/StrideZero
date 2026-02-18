@@ -38,7 +38,7 @@ public class MissionProgressUI : MonoBehaviour
     void Update()
     {
         if (missionManager == null) return;
-        if (isCompleted) return; // 🔥 COMPLETE ke baad overwrite band
+        if (isCompleted) return; 
 
         if (missionManager.CurrentMissionType != listenType)
         {
