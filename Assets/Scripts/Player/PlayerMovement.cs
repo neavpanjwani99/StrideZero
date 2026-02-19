@@ -46,9 +46,9 @@ public class PlayerMovement : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
 
-        rb.linearVelocity = new Vector3(
+        rb.velocity = new Vector3(
             x * config.sideSpeed,
-            rb.linearVelocity.y,
+            rb.velocity.y,
             0
         );
 

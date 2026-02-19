@@ -22,21 +22,21 @@ public class CoinSpawner : MonoBehaviour
         }
     }
 
-    // void SpawnCoin()
+    void SpawnCoin()
+    {
+        float x = Random.Range(minX, maxX);
+        Vector3 spawnPos = new Vector3(x, 0.6f, spawnZ);
+
+        Instantiate(coinPrefab, spawnPos, Quaternion.identity);
+    }
+
+    //     void SpawnCoin()
     // {
     //     float x = Random.Range(minX, maxX);
     //     Vector3 spawnPos = new Vector3(x, 0.6f, spawnZ);
 
-    //     Instantiate(coinPrefab, spawnPos, Quaternion.identity);
+    //     Quaternion rotation = Quaternion.Euler(90f, 90f, 35f);
+
+    //     Instantiate(coinPrefab, spawnPos, rotation);
     // }
-
-    void SpawnCoin()
-{
-    float x = Random.Range(minX, maxX);
-    Vector3 spawnPos = new Vector3(x, 0.6f, spawnZ);
-
-    Quaternion rotation = Quaternion.Euler(90f, 90f, 35f);
-
-    Instantiate(coinPrefab, spawnPos, rotation);
-}
 }

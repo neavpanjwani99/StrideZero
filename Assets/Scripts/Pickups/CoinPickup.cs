@@ -8,6 +8,7 @@ public class CoinPickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Coin Collected");
             GameEvents.OnCoinCollected?.Invoke(coinValue);
             Debug.Log("+ " + coinValue + " COIN");
             Destroy(gameObject);
