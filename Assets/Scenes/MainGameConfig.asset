@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccca6baf09c5b1a4baf37882d2f28c05, type: 3}
   m_Name: MainGameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
-  startSpeed: 12
+  startSpeed: 8
   maxSpeed: 22
   speedIncrease: 0.5
   speedIncreaseInterval: 5

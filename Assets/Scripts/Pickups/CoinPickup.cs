@@ -11,7 +11,7 @@ public class CoinPickup : MonoBehaviour
             Debug.Log("Coin Collected");
             GameEvents.OnCoinCollected?.Invoke(coinValue);
             Debug.Log("+ " + coinValue + " COIN");
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

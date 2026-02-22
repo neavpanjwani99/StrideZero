@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthPickup
   healAmount: 0.5
+  drainPauseTime: 6
 --- !u!114 &2037129756723111980
 MonoBehaviour:
   m_ObjectHideFlags: 0

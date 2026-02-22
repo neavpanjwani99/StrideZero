@@ -48,10 +48,18 @@ public class GameManager : MonoBehaviour
 
         int finalScore = ScoreManager.Instance.GetFinalScore();
         int finalCoins = FindObjectOfType<CoinManager>().totalCoins;
+float survivalTime = Time.timeSinceLevelLoad;
 
+RunData run = new RunData(
+    "Player1",
+    finalScore,
+    finalCoins,
+    survivalTime
+);
+
+LeaderboardManager.Instance.AddRun(run);
         gameOverUI.Show(finalScore, finalCoins);
     }
-
 
     public void RestartGame()
     {

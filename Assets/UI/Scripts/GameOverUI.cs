@@ -4,7 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
-    public GameObject panel;
+    [Header("Panels")]
+    public GameObject panel;              
+    public GameObject leaderboardPanel;   
+    public GameObject gameOverPanel;      
+
+    [Header("Texts")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI coinsText;
 
@@ -14,6 +19,18 @@ public class GameOverUI : MonoBehaviour
         scoreText.text = "Score: " + score;
         coinsText.text = "Coins: " + coins;
         Time.timeScale = 0f;
+    }
+
+    public void OpenLeaderboard()
+    {
+        gameOverPanel.SetActive(false);
+        leaderboardPanel.SetActive(true);
+    }
+
+    public void CloseLeaderboard()
+    {
+        leaderboardPanel.SetActive(false);
+        gameOverPanel.SetActive(true);
     }
 
     public void Restart()

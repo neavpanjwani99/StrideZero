@@ -1,15 +1,28 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinSpawner : MonoBehaviour
 {
     public GameObject coinPrefab;
+    public int poolSize = 5;
     public float spawnInterval = 4f;
 
     public float spawnZ = 80f;
     public float minX = -2f;
     public float maxX = 2f;
 
-    float timer;
+    private List<GameObject> pool = new List<GameObject>();
+    private float timer;
+
+    void Start()
+    {
+        for (int i = 0; i < poolSize; i++)
+        {
+            GameObject obj = Instantiate(coinPrefab);
+            obj.SetActive(false);
+            pool.Add(obj);
+        }
+    }
 
     void Update()
     {
@@ -24,12 +37,24 @@ public class CoinSpawner : MonoBehaviour
 
     void SpawnCoin()
     {
-        float x = Random.Range(minX, maxX);
-        Vector3 spawnPos = new Vector3(x, 0.6f, spawnZ);
+        GameObject obj = GetInactive();
+        if (obj == null) return;
 
-        Instantiate(coinPrefab, spawnPos, Quaternion.identity);
+        float x = Random.Range(minX, maxX);
+        obj.transform.position = new Vector3(x, 0.6f, spawnZ);
+        obj.SetActive(true);
     }
 
+    GameObject GetInactive()
+    {
+        foreach (var obj in pool)
+        {
+            if (!obj.activeInHierarchy)
+                return obj;
+        }
+        return null;
+    }
+}
     //     void SpawnCoin()
     // {
     //     float x = Random.Range(minX, maxX);
@@ -39,4 +64,4 @@ public class CoinSpawner : MonoBehaviour
 
     //     Instantiate(coinPrefab, spawnPos, rotation);
     // }
-}
+

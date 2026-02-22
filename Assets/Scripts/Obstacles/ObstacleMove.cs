@@ -1,12 +1,17 @@
 using UnityEngine;
 
-public class ObstacleMove : MonoBehaviour{
-    public float speed = 8f;
-    void Update(){
+public class ObstacleMove : MonoBehaviour
+{
+    public float speed = 12f;
+    public float deactivateZ = -10f;
+
+    void Update()
+    {
         transform.Translate(Vector3.back * speed * Time.deltaTime);
-        // Destroy obstacle when it goes out of view
-        if (transform.position.z < -10f){
-            Destroy(gameObject);
+
+        if (transform.position.z < deactivateZ)
+        {
+            gameObject.SetActive(false); // no destroy
         }
     }
 }

@@ -16,6 +16,6 @@ public class HealthPickup : MonoBehaviour
         if (drain != null)
             drain.PauseDrain(drainPauseTime);
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);   
     }
 }

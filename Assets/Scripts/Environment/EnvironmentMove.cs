@@ -32,8 +32,6 @@ public class EnvironmentMove : MonoBehaviour
         else
         {
             elapsedTime += Time.deltaTime;
-
-            // 🔥 NON-LINEAR ACCELERATION (SUBWAY FEEL)
             float t = Mathf.Clamp01(elapsedTime / 90f); // 0 → 1 in 90 sec
             float curveMultiplier = Mathf.Lerp(0.5f, 2.2f, t * t);
 
