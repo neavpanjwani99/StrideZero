@@ -37,7 +37,23 @@ public class DrinkSpawner : MonoBehaviour
         if (obj == null) return;
 
         float x = Random.Range(minX, maxX);
-        obj.transform.position = new Vector3(x, 0.6f, spawnZ);
+
+        // Raycast from above to detect ground properly
+        Vector3 rayStart = new Vector3(x, 10f, spawnZ);
+        RaycastHit hit;
+
+        if (Physics.Raycast(rayStart, Vector3.down, out hit, 20f))
+        {
+            float height = obj.GetComponent<Collider>().bounds.extents.y;
+            obj.transform.position = hit.point + Vector3.up * height;
+        }
+        else
+        {
+            // fallback (in case raycast fails)
+            float height = obj.GetComponent<Collider>().bounds.extents.y;
+            obj.transform.position = new Vector3(x, height, spawnZ);
+        }
+
         obj.SetActive(true);
     }
 

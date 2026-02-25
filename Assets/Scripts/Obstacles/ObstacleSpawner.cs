@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObstacleSpawner : MonoBehaviour
 {
     public GameConfig config;
-    public GameObject obstaclePrefab;
+    public GameObject[] obstaclePrefabs;
 
     public int poolSize = 8;
 
@@ -21,18 +21,20 @@ public class ObstacleSpawner : MonoBehaviour
         GameEvents.OnGameOver -= StopSpawning;
     }
 
-    void Start()
+   void Start()
+{
+    for (int i = 0; i < poolSize; i++)
     {
-        // Create pool
-        for (int i = 0; i < poolSize; i++)
-        {
-            GameObject obj = Instantiate(obstaclePrefab);
-            obj.SetActive(false);
-            pool.Add(obj);
-        }
+        // Random prefab choose while creating pool
+        GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
 
-        InvokeRepeating(nameof(SpawnObstacle), 1f, config.obstacleInterval);
+        GameObject obj = Instantiate(prefab);
+        obj.SetActive(false);
+        pool.Add(obj);
     }
+
+    InvokeRepeating(nameof(SpawnObstacle), 1f, config.obstacleInterval);
+}
 
     void SpawnObstacle()
     {
