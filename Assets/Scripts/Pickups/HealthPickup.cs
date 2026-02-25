@@ -4,6 +4,15 @@ public class HealthPickup : MonoBehaviour
 {
     public float healAmount = 0.5f;
     public float drainPauseTime = 6f;
+    public AudioClip healthSound;
+
+    AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GameObject.FindGameObjectWithTag("Player")
+                        .GetComponent<AudioSource>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -16,6 +25,11 @@ public class HealthPickup : MonoBehaviour
         if (drain != null)
             drain.PauseDrain(drainPauseTime);
 
-        gameObject.SetActive(false);   
+        if (audioSource != null && healthSound != null)
+        {
+            audioSource.PlayOneShot(healthSound);
+        }
+
+        gameObject.SetActive(false);
     }
 }

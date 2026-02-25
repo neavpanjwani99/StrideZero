@@ -129,6 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HealthPickup
   healAmount: 0.2
   drainPauseTime: 6
+  healthSound: {fileID: 8300000, guid: 95c0f58f0f0839b44baf204d3d8dc640, type: 3}
 --- !u!114 &8322484898572417529
 MonoBehaviour:
   m_ObjectHideFlags: 0

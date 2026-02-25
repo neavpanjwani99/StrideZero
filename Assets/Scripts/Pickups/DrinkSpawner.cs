@@ -43,10 +43,13 @@ public class DrinkSpawner : MonoBehaviour
         RaycastHit hit;
 
         if (Physics.Raycast(rayStart, Vector3.down, out hit, 20f))
-        {
-            float height = obj.GetComponent<Collider>().bounds.extents.y;
-            obj.transform.position = hit.point + Vector3.up * height;
-        }
+{
+    float height = obj.GetComponent<Collider>().bounds.extents.y;
+    
+    float extraHeight = 1.1f;   
+    
+    obj.transform.position = hit.point + Vector3.up * (height + extraHeight);
+}
         else
         {
             // fallback (in case raycast fails)

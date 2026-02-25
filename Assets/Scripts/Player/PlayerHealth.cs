@@ -9,6 +9,11 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth = 4f;
     public float hitCooldown = 0.6f;
 
+    [Header("Audio")]
+    public AudioClip hitSound;
+
+    AudioSource audioSource;
+
     public float CurrentHealth => currentHealth;
 
     float currentHealth;
@@ -21,6 +26,8 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
 
+        audioSource = GetComponent<AudioSource>();
+
         healthUI = FindObjectOfType<HealthUIController>();
         if (healthUI != null)
             healthUI.UpdateHealth(currentHealth);
@@ -32,6 +39,12 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0f);
+
+        // 🔊 HIT SOUND
+        if (audioSource != null && hitSound != null)
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
 
         if (healthUI != null)
             healthUI.UpdateHealth(currentHealth);
@@ -67,7 +80,7 @@ public class PlayerHealth : MonoBehaviour
 
     IEnumerator ApplyIdleAfterDelay()
     {
-        yield return new WaitForSeconds(0.25f); // animation finish hone de
+        yield return new WaitForSeconds(0.25f);
 
         if (heartAnimator == null || isDead) yield break;
 

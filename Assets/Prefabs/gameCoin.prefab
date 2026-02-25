@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757381141740960686}
-  m_Mesh: {fileID: 3710570473577402318, guid: 8a8f645a64a948145b3fb635e4d60b85, type: 3}
+  m_Mesh: {fileID: -5597002278806442958, guid: 2a72f5768dd02c14a95b0efab9534e24, type: 3}
 --- !u!23 &4058086737563076416
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleMove
   speed: 8
+  deactivateZ: -10
 --- !u!114 &3280147595690319636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinPickup
   coinValue: 1
+  coinSound: {fileID: 8300000, guid: d5bce11024061bf43ab33e7a4bcb592e, type: 3}
 --- !u!54 &85806373423262522
 Rigidbody:
   m_ObjectHideFlags: 0
