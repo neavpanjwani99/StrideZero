@@ -43,9 +43,10 @@ public class PlayerMovement : MonoBehaviour
         GameEvents.OnGameStart -= OnGameStart;
     }
 
-    float horizontalInput;
-    Vector2 startTouchPos;
-    bool isSwiping = false;
+float horizontalInput;
+
+float minSwipeDistance = 80f;
+Vector2 swipeStartPos;
     // void Update()
     // {
     //     if (isDead) return;
@@ -79,30 +80,47 @@ public class PlayerMovement : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID || UNITY_IOS
-    // Mobile Swipe Input
-    if (Input.touchCount > 0)
+if (Input.touchCount > 0)
+{
+    Touch touch = Input.GetTouch(0);
+
+    if (touch.phase == TouchPhase.Began)
     {
-        Touch touch = Input.GetTouch(0);
+        swipeStartPos = touch.position;
+    }
+    else if (touch.phase == TouchPhase.Ended)
+    {
+        Vector2 swipeDelta = touch.position - swipeStartPos;
 
-        if (touch.phase == TouchPhase.Began)
+        // Check if swipe is big enough
+        if (swipeDelta.magnitude > minSwipeDistance)
         {
-            startTouchPos = touch.position;
-            isSwiping = true;
-        }
-        else if (touch.phase == TouchPhase.Moved && isSwiping)
-        {
-            float swipeDelta = touch.position.x - startTouchPos.x;
+            // Horizontal Swipe
+            if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+            {
+                if (swipeDelta.x > 0)
+                {
+                    horizontalInput = 1f; // Right
+                }
+                else
+                {
+                    horizontalInput = -1f; // Left
+                }
 
-            horizontalInput = swipeDelta / Screen.width * 5f; // sensitivity
-
-            horizontalInput = Mathf.Clamp(horizontalInput, -1f, 1f);
-        }
-        else if (touch.phase == TouchPhase.Ended)
-        {
-            horizontalInput = 0f;
-            isSwiping = false;
+                Invoke(nameof(ResetHorizontal), 0.15f);
+            }
+            // Vertical Swipe
+            else
+            {
+                if (swipeDelta.y > 0 && isGrounded)
+                {
+                    rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+                    isGrounded = false;
+                }
+            }
         }
     }
+}
 #endif
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
@@ -111,21 +129,13 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
 
-        // Mobile Tap Jump
-#if UNITY_ANDROID || UNITY_IOS
-if (Input.touchCount > 0)
+
+    }
+
+void ResetHorizontal()
 {
-    Touch touch = Input.GetTouch(0);
-
-    if (touch.phase == TouchPhase.Began && isGrounded)
-    {
-        rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
-        isGrounded = false;
-    }
+    horizontalInput = 0f;
 }
-#endif
-    }
-
     // updating logic as per senior's suggestion to make it more smooth and responsive
     // void FixedUpdate()
     // {
