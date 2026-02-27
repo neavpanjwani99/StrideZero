@@ -66,4 +66,10 @@ LeaderboardManager.Instance.AddRun(run);
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public void QuitToMenu()
+{
+    Time.timeScale = 1f;
+    SceneManager.LoadScene("SplashScene");
+}
 }
