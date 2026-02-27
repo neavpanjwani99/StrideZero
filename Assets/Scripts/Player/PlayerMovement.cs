@@ -43,17 +43,67 @@ public class PlayerMovement : MonoBehaviour
         GameEvents.OnGameStart -= OnGameStart;
     }
 
+    float horizontalInput;
+    Vector2 startTouchPos;
+    bool isSwiping = false;
+    // void Update()
+    // {
+    //     if (isDead) return;
+
+    //float x = Input.GetAxis("Horizontal");
+
+    // rb.linearVelocity = new Vector3(
+    //     x * config.sideSpeed,
+    //     rb.linearVelocity.y,
+    //     0
+    // );
+
+    // if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+    // {
+    //     rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+    //     isGrounded = false;
+    // }
+
+    // Vector3 pos = transform.position;
+    // pos.x = Mathf.Clamp(pos.x, -config.laneLimit, config.laneLimit);
+    // transform.position = pos;
+    // }
+
     void Update()
     {
         if (isDead) return;
 
-        //float x = Input.GetAxis("Horizontal");
+#if UNITY_EDITOR || UNITY_STANDALONE
+    // PC / Laptop input
+    horizontalInput = Input.GetAxis("Horizontal");
+#endif
 
-        // rb.linearVelocity = new Vector3(
-        //     x * config.sideSpeed,
-        //     rb.linearVelocity.y,
-        //     0
-        // );
+#if UNITY_ANDROID || UNITY_IOS
+    // Mobile Swipe Input
+    if (Input.touchCount > 0)
+    {
+        Touch touch = Input.GetTouch(0);
+
+        if (touch.phase == TouchPhase.Began)
+        {
+            startTouchPos = touch.position;
+            isSwiping = true;
+        }
+        else if (touch.phase == TouchPhase.Moved && isSwiping)
+        {
+            float swipeDelta = touch.position.x - startTouchPos.x;
+
+            horizontalInput = swipeDelta / Screen.width * 5f; // sensitivity
+
+            horizontalInput = Mathf.Clamp(horizontalInput, -1f, 1f);
+        }
+        else if (touch.phase == TouchPhase.Ended)
+        {
+            horizontalInput = 0f;
+            isSwiping = false;
+        }
+    }
+#endif
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -61,12 +111,22 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
 
-        // Vector3 pos = transform.position;
-        // pos.x = Mathf.Clamp(pos.x, -config.laneLimit, config.laneLimit);
-        // transform.position = pos;
+        // Mobile Tap Jump
+#if UNITY_ANDROID || UNITY_IOS
+if (Input.touchCount > 0)
+{
+    Touch touch = Input.GetTouch(0);
+
+    if (touch.phase == TouchPhase.Began && isGrounded)
+    {
+        rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+        isGrounded = false;
+    }
+}
+#endif
     }
 
-// updating logic as per senior's suggestion to make it more smooth and responsive
+    // updating logic as per senior's suggestion to make it more smooth and responsive
     // void FixedUpdate()
     // {
     //     if (isDead) return;
@@ -84,25 +144,36 @@ public class PlayerMovement : MonoBehaviour
     //     transform.position = pos;
     // }
 
-void FixedUpdate()
-{
-    if (isDead) return;
+    // void FixedUpdate()
+    // {
+    //     if (isDead) return;
 
-    float x = Input.GetAxis("Horizontal");
+    //     float x = Input.GetAxis("Horizontal");
 
-    Vector3 velocity = rb.linearVelocity;
-    velocity.x = x * currentSideSpeed;
-    velocity.z = forwardSpeed;
+    //     Vector3 velocity = rb.linearVelocity;
+    //     velocity.x = x * currentSideSpeed;
+    //     velocity.z = forwardSpeed;
 
-    rb.linearVelocity = velocity;
-}
+    //     rb.linearVelocity = velocity;
+    // }
 
-void LateUpdate()
-{
-    Vector3 pos = rb.position;
-    pos.x = Mathf.Clamp(pos.x, -config.laneLimit, config.laneLimit);
-    rb.position = pos;
-}
+    void FixedUpdate()
+    {
+        if (isDead) return;
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = horizontalInput * currentSideSpeed;
+        velocity.z = forwardSpeed;
+
+        rb.linearVelocity = velocity;
+    }
+
+    void LateUpdate()
+    {
+        Vector3 pos = rb.position;
+        pos.x = Mathf.Clamp(pos.x, -config.laneLimit, config.laneLimit);
+        rb.position = pos;
+    }
 
     void OnGameStart()
     {
