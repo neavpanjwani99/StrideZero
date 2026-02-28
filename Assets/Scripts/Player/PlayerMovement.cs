@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     public GameConfig config;
     float currentSideSpeed;
     float forwardSpeed;
+    float speedTimer = 0f;
     [SerializeField] float speedBoostPerMission = 1.8f;
     [SerializeField] float maxSideSpeed = 15f;
 
@@ -78,6 +79,11 @@ Vector2 swipeStartPos;
     // PC / Laptop input
     horizontalInput = Input.GetAxis("Horizontal");
 #endif
+// Speed progression system
+speedTimer += Time.deltaTime;
+
+forwardSpeed += config.speedIncrease * Time.deltaTime;
+forwardSpeed = Mathf.Min(forwardSpeed, config.maxSpeed);
 
 #if UNITY_ANDROID || UNITY_IOS
 if (Input.touchCount > 0)
@@ -200,18 +206,32 @@ void ResetHorizontal()
             animator.enabled = false;
     }
 
-    void BoostSpeed()
-    {
+    // void BoostSpeed()
+    // {
         // config.sideSpeed = Mathf.Min(
         //     config.sideSpeed + speedBoostPerMission,
         //     maxSideSpeed
         // );
 
-        currentSideSpeed = Mathf.Min(
-            currentSideSpeed + speedBoostPerMission,
-            maxSideSpeed
-        );
-    }
+    //     currentSideSpeed = Mathf.Min(
+    //         currentSideSpeed + speedBoostPerMission,
+    //         maxSideSpeed
+    //     );
+    // }
+public float GetForwardSpeed()
+{
+    return forwardSpeed;
+}
+    void BoostSpeed()
+{
+    currentSideSpeed = Mathf.Min(
+        currentSideSpeed + speedBoostPerMission,
+        maxSideSpeed
+    );
+
+    forwardSpeed += 4f; // strong spike
+    forwardSpeed = Mathf.Min(forwardSpeed, config.maxSpeed);
+}
 
     void OnCollisionEnter(Collision col)
     {

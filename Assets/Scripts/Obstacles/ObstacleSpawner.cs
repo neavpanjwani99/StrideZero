@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class ObstacleSpawner : MonoBehaviour
 {
+    public PlayerMovement player;
     public GameConfig config;
     public GameObject[] obstaclePrefabs;
 
@@ -21,19 +23,49 @@ public class ObstacleSpawner : MonoBehaviour
         GameEvents.OnGameOver -= StopSpawning;
     }
 
-   void Start()
+//    void Start()
+// {
+//     for (int i = 0; i < poolSize; i++)
+//     {
+//         // Random prefab choose while creating pool
+//         GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
+
+//         GameObject obj = Instantiate(prefab);
+//         obj.SetActive(false);
+//         pool.Add(obj);
+//     }
+
+//     InvokeRepeating(nameof(SpawnObstacle), 1f, config.obstacleInterval);
+// }
+
+void Start()
 {
     for (int i = 0; i < poolSize; i++)
     {
-        // Random prefab choose while creating pool
         GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
-
         GameObject obj = Instantiate(prefab);
         obj.SetActive(false);
         pool.Add(obj);
     }
 
-    InvokeRepeating(nameof(SpawnObstacle), 1f, config.obstacleInterval);
+    StartCoroutine(SpawnRoutine());
+}
+
+IEnumerator SpawnRoutine()
+{
+    yield return new WaitForSeconds(1f);
+
+    while (!isGameOver)
+    {
+        SpawnObstacle();
+
+        float dynamicInterval = Mathf.Max(
+            0.8f,
+            config.obstacleInterval - (player.GetForwardSpeed() * 0.02f)
+        );
+
+        yield return new WaitForSeconds(dynamicInterval);
+    }
 }
 
     void SpawnObstacle()

@@ -22,7 +22,7 @@ public class MissionManager : MonoBehaviour
 
     void GenerateMission()
     {
-        GameEvents.OnNewMission?.Invoke(); // 🔥 STEP 3 RESET POINT
+        GameEvents.OnNewMission?.Invoke(); 
 
         MissionType type = (MissionType)Random.Range(0, 3);
 
