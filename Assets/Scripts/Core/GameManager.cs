@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 float survivalTime = Time.timeSinceLevelLoad;
 
 RunData run = new RunData(
-    "Player1",
+    PlayerPrefs.GetString("PlayerName", "Player"),
     finalScore,
     finalCoins,
     survivalTime
