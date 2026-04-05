@@ -1,74 +1,86 @@
-StrideZero – Endless Survival Game
+**StrideZero – Endless Survival Game**
 
-Desert Runner is a 3D endless runner game developed in Unity. The game is set in a desert environment where the player must avoid obstacles, complete missions, and survive as long as possible.
-This project was built as a learning-focused development exercise to understand game architecture, scene flow, object pooling, mission systems, and performance optimization in Unity.
+StrideZero is a 3D endless runner game built using Unity. The game is set in a desert environment where the player avoids obstacles, completes missions, and survives as long as possible. This project was created as a learning-focused build to understand how real game systems work — including movement logic, object pooling, missions, and performance optimization.
 
 **Game Overview**
 
-The player continuously moves forward in a desert terrain filled with obstacles. The objective is to avoid collisions, survive for longer durations, and complete dynamic missions. The project focuses on clean scene transitions, optimized spawning systems, and structured game logic.
+In this game, the player does not actually move forward. Instead, the environment and obstacles move towards the player to create the illusion of motion.
+**This approach:**
 
-**Core Features**
+- Keeps movement smooth
+- Simplifies control logic
+- Makes it easier to build an infinite game loop
 
-- Endless forward player movement
-- Obstacle system using Object Pooling 
+The goal is to survive longer, avoid obstacles, and complete missions during the run.
+
+**Core Features** 
+
+- Endless runner gameplay
+- Environment-based movement system
+- Obstacle system using object pooling
 - Desert-themed environment
-- Mission system including:
-- Distance-based mission
-- Coin collection mission
-- Safety mission 
+- Mission system:
+    - Distance-based
+    - Coin collection
+    - Survival-based
 - Distance-based scoring system
-- Game Over redirection to Main Menu
+- Game Over -> returns to main menu
 - Android build support
 
 **Obstacles**
-
-The obstacle system includes:
-
+**The game includes:**
 - Skull
 - Drum Barrel
 - Cactus
+All obstacles are managed using object pooling, meaning they are reused instead of created/destroyed repeatedly. This improves performance and keeps gameplay smooth.
 
-All obstacles are managed using an Object Pooling system to ensure better performance and memory efficiency during continuous spawning.
+**Scene Structure** 
 
-**Scene Structure**
-
-1. SplashScene (Main Menu + Entry Point)
-
-- Initial logo screen
-- Play interaction
-- Scene transition to Game Scene
+1. SplashScene (Main Menu)
+- Logo screen
+- Play button
+- Entry point of the game
 
 2. Game Scene
-
-- Player Controller
-- Obstacle Pooling System
-- Mission Manager
-- Score System
-- Game Over Logic
-
-The main menu logic is integrated within the SplashScene to keep the project structure simple and efficient.
+- Player controller
+- Obstacle spawning system
+- Mission manager
+- Score tracking
+- Game over handling
 
 **Game Flow**
-
-**SplashScene → Game Scene → Game Over → Redirect back to SplashScene **
-
-**Engine & Version**
-
-- Engine: Unity 6.3 LTS (6000.3.8f1)
-- Platform: Android
-- Graphics API: DX11
+SplashScene -> Game Scene -> Game Over -> SplashScene
 
 **Scoring System**
+The game uses a distance-based scoring system, where the score increases as long as the player survives.
 
-The game currently uses a distance-based scoring system.
-Coin-based scoring is not implemented in the final logic.
+**Tech Stack**
 
-**Learning Objectives Behind This Project**
+- Engine: Unity 6 LTS (6000.3.x)
+- Language: C#
+- Platform: Android
 
-- Implementing object pooling for optimized obstacle spawning
-- Designing a mission-based system
-- Managing scene transitions and UI logic
-- Handling Android build configuration
-- Structuring a scalable endless runner architecture
+**What This Project Focuses On**
 
-**LinkedIn:** https://www.linkedin.com/in/neav-panjwani/
+- Building modular game systems
+- Using object pooling for performance
+- Designing a mission-based gameplay loop
+- Managing scene transitions and UI
+- Creating a scalable endless runner structure
+
+**Setup Instructions**
+
+- Run the Project
+    - Install Unity Hub
+    - Install Unity version 6000.3.x (LTS)
+    - Clone or download this repository
+    - Open the project using Unity Hub
+    - Open the SplashScene
+    - Click Play
+
+- Build for Android
+    - Install Android Build Support in Unity
+    - Go to File -> Build Settings
+    - Select Android
+    - Click Switch Platform
+    - Connect your device or build APK
