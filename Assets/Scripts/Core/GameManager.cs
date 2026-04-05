@@ -48,16 +48,20 @@ public class GameManager : MonoBehaviour
 
         int finalScore = ScoreManager.Instance.GetFinalScore();
         int finalCoins = FindObjectOfType<CoinManager>().totalCoins;
-float survivalTime = Time.timeSinceLevelLoad;
+        float survivalTime = Time.timeSinceLevelLoad;
 
-RunData run = new RunData(
-    PlayerPrefs.GetString("PlayerName", "Player"),
-    finalScore,
-    finalCoins,
-    survivalTime
-);
+        PlayerPrefs.SetInt("LAST_SCORE", finalScore);
+        PlayerPrefs.SetString("LAST_PLAY_TIME", System.DateTime.Now.ToString());
+        PlayerPrefs.Save();
 
-LeaderboardManager.Instance.AddRun(run);
+        RunData run = new RunData(
+            PlayerPrefs.GetString("PlayerName", "Player"),
+            finalScore,
+            finalCoins,
+            survivalTime
+        );
+
+        LeaderboardManager.Instance.AddRun(run);
         gameOverUI.Show(finalScore, finalCoins);
     }
 
@@ -68,8 +72,8 @@ LeaderboardManager.Instance.AddRun(run);
     }
 
     public void QuitToMenu()
-{
-    Time.timeScale = 1f;
-    SceneManager.LoadScene("SplashScene");
-}
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("SplashScene");
+    }
 }

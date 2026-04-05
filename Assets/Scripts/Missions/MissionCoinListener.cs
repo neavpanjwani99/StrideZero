@@ -24,4 +24,8 @@ public class MissionCoinListener : MonoBehaviour
     missionManager.AddProgress(amount);
 }
 
-}
+} /* 
+coin collect hone pe mission ka progress update ho, aur check karna ki current mission coin collect 
+karne ka hai ki nahi, agar hai toh hi progress update karna hai, taki distance ya survival mission me 
+coin collect karne se progress na badhe
+*/

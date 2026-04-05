@@ -6,12 +6,12 @@ public class PlayerMovement : MonoBehaviour
     float currentSideSpeed;
     float forwardSpeed;
     float speedTimer = 0f;
-    [SerializeField] float speedBoostPerMission = 1.8f;
-    [SerializeField] float maxSideSpeed = 15f;
+    [SerializeField] float speedBoostPerMission = 1.8f; //  yeh extra variable isliye banaya hai taki har mission complete hone par player ki speed kitni badhegi usko control kar sake, aur isse hum inspector se adjust kar sakte hain
+    [SerializeField] float maxSideSpeed = 15f; // yeh variable side speed ka maximum limit set karne ke liye hai
 
     Rigidbody rb;
     PlayerHealth health;
-    Animator animator;
+    Animator animator; // it was implemented when i was implementing human player as a runner 
 
     bool isGrounded;
     bool isDead = false;
@@ -44,10 +44,10 @@ public class PlayerMovement : MonoBehaviour
         GameEvents.OnGameStart -= OnGameStart;
     }
 
-float horizontalInput;
+    float horizontalInput;
 
-float minSwipeDistance = 80f;
-Vector2 swipeStartPos;
+    float minSwipeDistance = 80f;
+    Vector2 swipeStartPos;
     // void Update()
     // {
     //     if (isDead) return;
@@ -79,11 +79,11 @@ Vector2 swipeStartPos;
     // PC / Laptop input
     horizontalInput = Input.GetAxis("Horizontal");
 #endif
-// Speed progression system
-speedTimer += Time.deltaTime;
+        // Speed progression system
+        speedTimer += Time.deltaTime;
 
-forwardSpeed += config.speedIncrease * Time.deltaTime;
-forwardSpeed = Mathf.Min(forwardSpeed, config.maxSpeed);
+        forwardSpeed += config.speedIncrease * Time.deltaTime;
+        forwardSpeed = Mathf.Min(forwardSpeed, config.maxSpeed);
 
 #if UNITY_ANDROID || UNITY_IOS
 if (Input.touchCount > 0)
@@ -138,10 +138,10 @@ if (Input.touchCount > 0)
 
     }
 
-void ResetHorizontal()
-{
-    horizontalInput = 0f;
-}
+    void ResetHorizontal()
+    {
+        horizontalInput = 0f;
+    }
     // updating logic as per senior's suggestion to make it more smooth and responsive
     // void FixedUpdate()
     // {
@@ -184,7 +184,7 @@ void ResetHorizontal()
         rb.linearVelocity = velocity;
     }
 
-    void LateUpdate()
+    void LateUpdate() 
     {
         Vector3 pos = rb.position;
         pos.x = Mathf.Clamp(pos.x, -config.laneLimit, config.laneLimit);
@@ -208,30 +208,30 @@ void ResetHorizontal()
 
     // void BoostSpeed()
     // {
-        // config.sideSpeed = Mathf.Min(
-        //     config.sideSpeed + speedBoostPerMission,
-        //     maxSideSpeed
-        // );
+    // config.sideSpeed = Mathf.Min(
+    //     config.sideSpeed + speedBoostPerMission,
+    //     maxSideSpeed
+    // );
 
     //     currentSideSpeed = Mathf.Min(
     //         currentSideSpeed + speedBoostPerMission,
     //         maxSideSpeed
     //     );
     // }
-public float GetForwardSpeed()
-{
-    return forwardSpeed;
-}
+    public float GetForwardSpeed()
+    {
+        return forwardSpeed;
+    }
     void BoostSpeed()
-{
-    currentSideSpeed = Mathf.Min(
-        currentSideSpeed + speedBoostPerMission,
-        maxSideSpeed
-    );
+    {
+        currentSideSpeed = Mathf.Min(
+            currentSideSpeed + speedBoostPerMission,
+            maxSideSpeed
+        );
 
-    forwardSpeed += 4f; // strong spike
-    forwardSpeed = Mathf.Min(forwardSpeed, config.maxSpeed);
-}
+        forwardSpeed += 4f; // strong spike
+        forwardSpeed = Mathf.Min(forwardSpeed, config.maxSpeed);
+    }
 
     void OnCollisionEnter(Collision col)
     {

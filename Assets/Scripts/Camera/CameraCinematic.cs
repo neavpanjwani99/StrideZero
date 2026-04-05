@@ -77,9 +77,10 @@ public class CameraCinematic : MonoBehaviour{
             t += Time.unscaledDeltaTime;
 
             float damper = 1f - (t / duration);
-
-            float x = Random.Range(-1f, 1f) * intensity * damper;
-            float y = Random.Range(-1f, 1f) * intensity * damper;
+// damper use karenge taaki shake gradually kam ho jaye jaise hi time badhta hai, shake intensity kam hoti jaye
+// random.range ae -1 se 1 ke biche ki value dega..
+            float x = Random.Range(-1f, 1f) * intensity * damper; // random shake ke liye x axis shake karenge
+            float y = Random.Range(-1f, 1f) * intensity * damper; // random shake ke liye y axis bhi shake karenge
 
             transform.position = originalPos + new Vector3(x, y, 0f);
 

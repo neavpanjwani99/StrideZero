@@ -4,13 +4,13 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] float lowHealthThreshold = 1f;
-    public HeartAnimator heartAnimator;
+    public HeartAnimator heartAnimator; // heart animation controller reference, jise hum inspector se assign karenge, taki health ke hisab se heart animation ko control kar sake
 
     public float maxHealth = 4f;
-    public float hitCooldown = 0.6f;
+    public float hitCooldown = 0.6f; // 0.6 sec ke baad player ko phir se demage milega 
 
-    [Header("Audio")]
-    public AudioClip hitSound;
+    [Header("Audio")] // audio related variables ke liye header jho inspector me alag se dikhai de jab script attach karenge
+    public AudioClip hitSound; // hit pe jho audio play ho raha hai uska reference, jise hum inspector se assign karenge, taki player hit hone pe sound play ho sake
 
     AudioSource audioSource;
 
@@ -40,7 +40,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0f);
 
-        // 🔊 HIT SOUND
+        // HIT SOUND
         if (audioSource != null && hitSound != null)
         {
             audioSource.PlayOneShot(hitSound);
@@ -75,7 +75,7 @@ public class PlayerHealth : MonoBehaviour
         if (heartAnimator != null)
             heartAnimator.AnimateIncrease();
 
-        StartCoroutine(ApplyIdleAfterDelay());
+        StartCoroutine(ApplyIdleAfterDelay()); // coroutine to apply idle effects after a short delay, taki health increase hone ke baad heart animation me changes dikhai de
     }
 
     IEnumerator ApplyIdleAfterDelay()

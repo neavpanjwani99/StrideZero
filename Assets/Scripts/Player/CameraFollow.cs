@@ -24,7 +24,8 @@ public class CameraFollow : MonoBehaviour
     {
         if (!gameOver)
         {
-            Vector3 desiredPos = target.position + offset;
+            Vector3 desiredPos = target.position + offset; // relative position calculate karne ke liye target ke position me offset add karna hai
+            // smooth follow karne ke liye Lerp function ka use karenge, jisme current position, desired position aur follow speed ko use karenge
             transform.position = Vector3.Lerp(
                 transform.position,
                 desiredPos,
@@ -35,10 +36,9 @@ public class CameraFollow : MonoBehaviour
         {
             if (timer < inertiaTime)
             {
-                transform.Translate(Vector3.forward * 5f * Time.deltaTime);
+                transform.Translate(Vector3.forward * 5f * Time.deltaTime); // game over hone ke baad camera ko thoda aage move karne ke liye, taki player ke Hit hone ka effect zyada dramatic lage
                 timer += Time.deltaTime;
             }
-        
         }
     }
 

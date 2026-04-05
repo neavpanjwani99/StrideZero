@@ -22,7 +22,7 @@ public class MissionManager : MonoBehaviour
 
     void GenerateMission()
     {
-        GameEvents.OnNewMission?.Invoke(); 
+        GameEvents.OnNewMission?.Invoke(); // mission generate hone pe event trigger karna, taki UI update ho sake
 
         MissionType type = (MissionType)Random.Range(0, 3);
 
@@ -90,7 +90,7 @@ public class MissionManager : MonoBehaviour
 
     public MissionType CurrentMissionType
     {
-        get { return currentMission.type; }
+        get { return currentMission.type; } // current mission ke type ko return karna, taki UI me dikhai de sake konsa mission chal raha hai 
     }
 
     public MissionData GetMission() => currentMission;

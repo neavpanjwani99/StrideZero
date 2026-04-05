@@ -10,7 +10,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     public int poolSize = 8;
 
-    private List<GameObject> pool = new List<GameObject>();
+    private List<GameObject> pool = new List<GameObject>(); // object pool for obstacles
     private bool isGameOver = false;
 
     void OnEnable()
@@ -51,6 +51,7 @@ void Start()
     StartCoroutine(SpawnRoutine());
 }
 
+// IEnumerator use hota hai kyu ki jab humko coroutine finction bana na hota hai tho uska return type IEnumerator hota hai 
 IEnumerator SpawnRoutine()
 {
     yield return new WaitForSeconds(1f);
