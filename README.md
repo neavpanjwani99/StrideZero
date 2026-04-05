@@ -1,6 +1,6 @@
 **StrideZero – Endless Survival Game**
 
-StrideZero is a 3D endless runner game built using Unity. The game is set in a desert environment where the player avoids obstacles, completes missions, and survives as long as possible. This project was created as a learning-focused build to understand how real game systems work — including movement logic, object pooling, missions, and performance optimization.
+StrideZero is a 3D endless runner game built using Unity. The game is set in a desert environment where the player avoids obstacles, completes missions, and survives as long as possible. This project was created as a learning-focused build to understand how real game systems work including movement logic, object pooling, missions, and performance optimization.
 
 **Game Overview**
 
