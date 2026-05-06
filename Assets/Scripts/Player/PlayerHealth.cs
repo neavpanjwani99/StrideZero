@@ -105,17 +105,76 @@ public class PlayerHealth : MonoBehaviour
         canTakeDamage = true;
     }
 
+    // void Die()
+    // {
+    //     if (isDead) return;
+
+    //     isDead = true;
+
+    //     if (healthUI != null)
+    //         healthUI.ClearAll();
+
+    //     if (heartAnimator != null)
+    //         heartAnimator.StopIdleEffects();
+
+    //     GameEvents.OnGameOver?.Invoke();
+    // }
+
     void Die()
     {
         if (isDead) return;
 
         isDead = true;
 
-        if (healthUI != null)
-            healthUI.ClearAll();
+        Vector3 deathPosition = transform.position;
+        Quaternion deathRotation = transform.rotation;
+
+        PlayerMovement movement = GetComponent<PlayerMovement>();
+        if (movement != null)
+            movement.enabled = false;
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            rb.detectCollisions = false;
+        }
+
+        transform.position = deathPosition;
+        transform.rotation = deathRotation;
 
         if (heartAnimator != null)
             heartAnimator.StopIdleEffects();
+
+        Animator animator = GetComponentInChildren<Animator>();
+        if (animator != null)
+        {
+            animator.applyRootMotion = false;
+            animator.SetBool("IsJumping", false);
+            animator.SetTrigger("Die");
+        }
+
+        StartCoroutine(GameOverAfterDeathAnimation(deathPosition, deathRotation));
+    }
+
+    IEnumerator GameOverAfterDeathAnimation(Vector3 deathPosition, Quaternion deathRotation)
+    {
+        float timer = 0f;
+        float deathAnimTime = 3.2f;
+
+        while (timer < deathAnimTime)
+        {
+            transform.position = deathPosition;
+            transform.rotation = deathRotation;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (healthUI != null)
+            healthUI.ClearAll();
 
         GameEvents.OnGameOver?.Invoke();
     }

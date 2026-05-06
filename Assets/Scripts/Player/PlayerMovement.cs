@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
 
     bool isGrounded;
     bool isDead = false;
+    bool jumpLocked = false;
+    [SerializeField] float jumpInputCooldown = 0.35f;
 
     void Start()
     {
@@ -22,11 +24,14 @@ public class PlayerMovement : MonoBehaviour
         forwardSpeed = config.startSpeed;
         rb = GetComponent<Rigidbody>();
         health = GetComponent<PlayerHealth>();
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
+        // man animator (player ke ander child me rakha hai man_full ko )
+        animator = GetComponentInChildren<Animator>();
 
         if (animator != null)
         {
             animator.enabled = false;
+            animator.applyRootMotion = false;
         }
     }
 
@@ -118,23 +123,54 @@ if (Input.touchCount > 0)
             // Vertical Swipe
             else
             {
-                if (swipeDelta.y > 0 && isGrounded)
-                {
-                    rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
-                    isGrounded = false;
-                }
+                // if (swipeDelta.y > 0 && isGrounded)
+                // {
+                //     rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+                //     isGrounded = false;
+                // }
+
+                // updated
+
+                // if (swipeDelta.y > 0 && isGrounded)
+                // {
+                //     rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+                //     isGrounded = false;
+
+                //     if (animator != null)
+                //         animator.SetBool("IsJumping", true);
+                // }
+
+                if (swipeDelta.y > 0)
+{
+    TryJump();
+}
             }
         }
     }
 }
 #endif
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-        }
+        // if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        // {
+        //     rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+        //     isGrounded = false;
+        // }
 
+        // updated
+
+        // if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        // {
+        //     rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+        //     isGrounded = false;
+
+        //     if (animator != null)
+        //         animator.SetBool("IsJumping", true);
+        // }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+{
+    TryJump();
+}
 
     }
 
@@ -173,6 +209,33 @@ if (Input.touchCount > 0)
     //     rb.linearVelocity = velocity;
     // }
 
+    void TryJump()
+{
+    if (!isGrounded || jumpLocked) return;
+
+    jumpLocked = true;
+    isGrounded = false;
+
+    rb.AddForce(Vector3.up * config.jumpForce, ForceMode.Impulse);
+
+    if (animator != null)
+        animator.SetBool("IsJumping", true);
+
+    // Invoke(nameof(UnlockJump), jumpInputCooldown);
+    Invoke(nameof(UnlockJump), 0.15f);
+}
+
+void UnlockJump()
+{
+    jumpLocked = false;
+}
+
+void StopJumpAnimation()
+{
+    if (animator != null)
+        animator.SetBool("IsJumping", false);
+}
+
     void FixedUpdate()
     {
         if (isDead) return;
@@ -184,7 +247,7 @@ if (Input.touchCount > 0)
         rb.linearVelocity = velocity;
     }
 
-    void LateUpdate() 
+    void LateUpdate()
     {
         Vector3 pos = rb.position;
         pos.x = Mathf.Clamp(pos.x, -config.laneLimit, config.laneLimit);
@@ -237,9 +300,19 @@ if (Input.touchCount > 0)
     {
         if (isDead) return;
 
+        // if (col.gameObject.CompareTag("Ground"))
+        // {
+        //     isGrounded = true;
+        // }
         if (col.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+
+            // if (animator != null)
+            //     animator.SetBool("IsJumping", false);
+
+            if (animator != null)
+    Invoke(nameof(StopJumpAnimation), 0.05f);
         }
 
         if (col.gameObject.CompareTag("Obstacle"))
